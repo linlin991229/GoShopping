@@ -2,29 +2,40 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from datetime import datetime
 import time
-from PyQt5.QtWidgets import QApplication,QLabel
 
-app=QApplication([])
+from UI import initUI
+
+# chrome_options = webdriver.ChromeOptions()
+# chrome_options.binary_location = "D:\\Unzip\\chromedriver\\chromedriver-win64\\chromedriver.exe"
 driver = webdriver.Chrome()
+
+# edge_options=webdriver.EdgeOptions()
+# edge_options.executable_path="D:\\Downloads\\Programs\\msedgedriver.exe"
+# driver=webdriver.Edge(options=edge_options)
+
+global frame
+
+
+def onclick():
+    print('确认登录')
+    # 转到购物车
+    driver.get("https://cart.taobao.com/cart.htm")
+    time.sleep(1)
+    now = datetime.now()
+    print("登录成功", now)
 
 
 def login():
     driver.get("https://www.taobao.com")
-    time.sleep(2)
+    time.sleep(1)
     # 点击跳转登录
     driver.find_element(By.LINK_TEXT, "亲，请登录").click()
-    time.sleep(2)
+    time.sleep(1)
     driver.find_element(By.CLASS_NAME, "icon-qrcode").click()
-    input('请扫码登录，然后回车')
+    print('等待用户扫码登录')
 
-    QLabel('请扫码登录').show()
-    app.exec_()
+    initUI('请扫码登录', onclick)
 
-    # 转到购物车
-    driver.get("https://cart.taobao.com/cart.htm")
-    time.sleep(2)
-    now = datetime.now()
-    print("登录成功", now)
 
 
 def buy(buy_time):
@@ -36,5 +47,5 @@ def buy(buy_time):
 
 
 if __name__ == '__main__':
-    # login()
+    login()
     buy(input('请输入抢购时间:'))
