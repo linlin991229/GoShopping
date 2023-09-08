@@ -1,18 +1,22 @@
 import wx
 
 
-FONT_STYLE='微软雅黑'
+FONT_STYLE = '微软雅黑'
+
+
 
 class MyFrame(wx.Frame):
     def __init__(self, parent, title, handle):
         super(MyFrame, self).__init__(parent, title=title, size=(300, 200))
 
+        TIP_FONT_SIZE = wx.Font(18, wx.DEFAULT, wx.NORMAL,
+                        wx.NORMAL, False, FONT_STYLE)
+
         panel = wx.Panel(self)
 
         st = wx.StaticText(panel, -1, '请确认是否已登录',
-                            style=wx.ALIGN_CENTER_HORIZONTAL)  # 生成静态文本控件，水平居中
-        st.SetFont(wx.Font(20, wx.DEFAULT, wx.NORMAL,
-                    wx.NORMAL, False, FONT_STYLE))  # 设置字体字号
+                           style=wx.ALIGN_CENTER_HORIZONTAL)  # 生成静态文本控件，水平居中
+        st.SetFont(TIP_FONT_SIZE)  # 设置字体字号
 
         # 创建一个水平和垂直居中的BoxSizer来容纳文本控件
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -24,16 +28,23 @@ class MyFrame(wx.Frame):
         panel.SetSizer(sizer)
 
         button = wx.Button(panel, label="已登录", pos=(100, 50), size=(100, 50))
-        button.SetFont(wx.Font(16, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False, FONT_STYLE))
+        button.SetFont(wx.Font(16, wx.DEFAULT, wx.NORMAL,
+                       wx.NORMAL, False, FONT_STYLE))
         button.Bind(wx.EVT_BUTTON, lambda event,
                     handle=handle: self.onclick(event, handle))  # 绑定按钮点击事件
 
         sizer.Add(button, 0, wx.ALIGN_CENTER_HORIZONTAL)
 
+        # 提示输入抢购时间
+        dateTip = wx.StaticText(panel, -1, "请输入抢购时间")
+        dateTip.SetFont(TIP_FONT_SIZE)
+        sizer.Add(dateTip, 0, wx.ALIGN_CENTER_HORIZONTAL)
+
+        date_picker = wx.DatePickerCtrl(panel, style=wx.DP_DEFAULT | wx.DP_SHOWCENTURY)
+        sizer.Add(date_picker)
+
     def onclick(self, event, handle):
         # self.Close()
-
-
 
         handle()
         return True
